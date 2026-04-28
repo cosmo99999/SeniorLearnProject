@@ -1,16 +1,17 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SeniorLearnProject.Data;
 using SeniorLearnProject.Models;
 
 namespace SeniorLearnProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _context;
+        private SchedulerService schedulerService;
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
