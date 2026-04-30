@@ -7,47 +7,22 @@ using System.Threading.Tasks;
 namespace SeniorLearnProject.Models;
 
 
-internal class Member
+public class Member
 {
-    private int Id;
-    private User user;
-    private List<Enrolment> enrolments;
-    private List<DeliveryPlan> deliveryPlans;
-    private List<Role> roles;
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public List<Enrolment> Enrolments { get; set; }
+    public List<DeliveryPlan> DeliveryPlans { get; set; }
+    public List<Role> Roles { get; set; }
 
     public Member(int id)
     {
         Id = id;
     }
 
-    public bool CreateDeliveryPlan(List<Lesson> lessons, bool isCourse)
+    public void AddDeliveryPlan(List<Lesson> lessons, bool isCourse)
     {
-        if(DoesLessonConflictWithExisting(lessons) && IsProfesional())
-        {
-            deliveryPlans.Add(new DeliveryPlan(lessons, isCourse));
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public bool DoesLessonConflictWithExisting(List<Lesson> lessonInput)
-    {
-        foreach(DeliveryPlan p in deliveryPlans)
-        {
-            foreach(Lesson existingLesson in p.Lessons)
-            {
-                foreach(Lesson newLesson in lessonInput)
-                {
-                    if(Lesson.IsOverlapping(existingLesson, newLesson))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        DeliveryPlans.Add(new DeliveryPlan(lessons, isCourse));
     }
     void AssignRole(RoleType roleType)
     {
@@ -67,13 +42,13 @@ internal class Member
     }
     void AddRoleWithType(RoleType roleType)
     {
-        roles.Add(new Role(roleType));
+        Roles.Add(new Role(roleType));
     }
     private bool IsProfesional()
     {
-        foreach (Role r in roles)
+        foreach (Role r in Roles)
         {
-            if (r.roleType == RoleType.Professional)
+            if (r.RoleType == RoleType.Professional)
             {
                 return true;
             }
@@ -82,9 +57,9 @@ internal class Member
     }
     private bool IsStandard()
     {
-        foreach (Role r in roles)
+        foreach (Role r in Roles)
         {
-            if (r.roleType == RoleType.Standard)
+            if (r.RoleType == RoleType.Standard)
             {
                 return true;
             }
@@ -93,9 +68,9 @@ internal class Member
     }
     private bool IsHonorary()
     {
-        foreach (Role r in roles)
+        foreach (Role r in Roles)
         {
-            if (r.roleType == RoleType.Honorary)
+            if (r.RoleType == RoleType.Honorary)
             {
                 return true;
             }
@@ -104,7 +79,7 @@ internal class Member
     }
     Role FindRoleForType(RoleType roleType)
     {
-        foreach (Role r in roles)
+        foreach (Role r in Roles)
         {
             if (r.RoleType == roleType)
             {

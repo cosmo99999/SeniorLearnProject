@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace SeniorLearnProject.Models;
 
 
-internal class Enrolment
+public class Enrolment
 {
     public int Id { get; set; }
     public List<Lesson> Lessons { get; set; }
 
+    private Enrolment(){}
     public Enrolment(List<Lesson> lessons)
     {
         Lessons = lessons;

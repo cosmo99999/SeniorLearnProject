@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorLearnProject.Data;
 
@@ -11,9 +12,11 @@ using SeniorLearnProject.Data;
 namespace SeniorLearnProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260429234611_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,121 +227,6 @@ namespace SeniorLearnProject.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SeniorLearnProject.Models.DeliveryPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsCourse")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("DeliveryPlans", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Enrolment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("Enrolments", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DeliveryPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("EnrolmentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliveryPlanId");
-
-                    b.HasIndex("EnrolmentId");
-
-                    b.ToTable("Lessons", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Member", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Members", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("Roles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -388,57 +276,6 @@ namespace SeniorLearnProject.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.DeliveryPlan", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.Member", null)
-                        .WithMany("DeliveryPlans")
-                        .HasForeignKey("MemberId");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Enrolment", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.Member", null)
-                        .WithMany("Enrolments")
-                        .HasForeignKey("MemberId");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.DeliveryPlan", null)
-                        .WithMany("Lessons")
-                        .HasForeignKey("DeliveryPlanId");
-
-                    b.HasOne("SeniorLearnProject.Models.Enrolment", null)
-                        .WithMany("Lessons")
-                        .HasForeignKey("EnrolmentId");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Role", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.Member", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("MemberId");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.DeliveryPlan", b =>
-                {
-                    b.Navigation("Lessons");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Enrolment", b =>
-                {
-                    b.Navigation("Lessons");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Member", b =>
-                {
-                    b.Navigation("DeliveryPlans");
-
-                    b.Navigation("Enrolments");
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
