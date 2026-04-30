@@ -8,11 +8,12 @@ namespace SeniorLearnProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private SchedulerService schedulerService;
-        public HomeController(ApplicationDbContext context)
+        private readonly SeniorLearnContext _context;
+        private readonly SchedulerService _schedulerService;
+        public HomeController(SeniorLearnContext context, SchedulerService schedulerService)
         {
             _context = context;
+            _schedulerService = schedulerService;
         }
 
         public IActionResult Index()

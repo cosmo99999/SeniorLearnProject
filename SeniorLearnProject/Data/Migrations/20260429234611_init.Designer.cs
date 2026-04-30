@@ -11,7 +11,7 @@ using SeniorLearnProject.Data;
 
 namespace SeniorLearnProject.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(SeniorLearnContext))]
     [Migration("20260429234611_init")]
     partial class init
     {

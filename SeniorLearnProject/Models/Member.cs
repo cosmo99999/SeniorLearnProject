@@ -11,20 +11,21 @@ public class Member
 {
     public int Id { get; set; }
     public int UserId { get; set; }
-    public List<Enrolment> Enrolments { get; set; }
-    public List<DeliveryPlan> DeliveryPlans { get; set; }
-    public List<Role> Roles { get; set; }
+    public List<Enrolment> Enrolments { get; set; } = new();
+    public List<DeliveryPlan> DeliveryPlans { get; set; } = new();
+    public List<Role> Roles { get; set; } = new();
 
-    public Member(int id)
-    {
-        Id = id;
-    }
+    public Member(){}
 
     public void AddDeliveryPlan(List<Lesson> lessons, bool isCourse)
     {
         DeliveryPlans.Add(new DeliveryPlan(lessons, isCourse));
     }
-    void AssignRole(RoleType roleType)
+    public void AddEnrolment(List<Lesson> lessons)
+    {
+        Enrolments.Add(new Enrolment(lessons));
+    }
+    public void AssignRole(RoleType roleType)
     {
         var role = FindRoleForType(roleType);
         if (role == null)
@@ -36,11 +37,11 @@ public class Member
             ActivateRole(role);
         }
     }
-    void ActivateRole(Role role)
+    public void ActivateRole(Role role)
     {
 
     }
-    void AddRoleWithType(RoleType roleType)
+    public void AddRoleWithType(RoleType roleType)
     {
         Roles.Add(new Role(roleType));
     }

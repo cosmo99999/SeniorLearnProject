@@ -9,7 +9,7 @@ using SeniorLearnProject.Data;
 
 namespace SeniorLearnProject.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(SeniorLearnContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

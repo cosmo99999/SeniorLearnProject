@@ -10,7 +10,7 @@ using SeniorLearnProject.Data;
 
 namespace SeniorLearnProject.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(SeniorLearnContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -242,7 +242,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("DeliveryPlans", (string)null);
+                    b.ToTable("DeliveryPlans");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Enrolment", b =>
@@ -260,7 +260,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Enrolments", (string)null);
+                    b.ToTable("Enrolments");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
@@ -271,7 +271,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DeliveryPlanId")
+                    b.Property<int>("DeliveryPlanId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("End")
@@ -293,7 +293,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     b.HasIndex("EnrolmentId");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Member", b =>
@@ -309,7 +309,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Role", b =>
@@ -336,7 +336,7 @@ namespace SeniorLearnProject.Data.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -406,13 +406,17 @@ namespace SeniorLearnProject.Data.Migrations
 
             modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.DeliveryPlan", null)
+                    b.HasOne("SeniorLearnProject.Models.DeliveryPlan", "DeliveryPlan")
                         .WithMany("Lessons")
-                        .HasForeignKey("DeliveryPlanId");
+                        .HasForeignKey("DeliveryPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SeniorLearnProject.Models.Enrolment", null)
                         .WithMany("Lessons")
                         .HasForeignKey("EnrolmentId");
+
+                    b.Navigation("DeliveryPlan");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Role", b =>

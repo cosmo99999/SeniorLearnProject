@@ -10,7 +10,7 @@ namespace SeniorLearnProject.Models;
 public class Enrolment
 {
     public int Id { get; set; }
-    public List<Lesson> Lessons { get; set; }
+    public List<Lesson> Lessons { get; set; } = new();
 
     private Enrolment(){}
     public Enrolment(List<Lesson> lessons)

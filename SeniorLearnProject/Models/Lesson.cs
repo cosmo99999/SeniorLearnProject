@@ -12,8 +12,9 @@ public class Lesson
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public string Title { get; set; }
-    private DeliveryPlan DeliveryPlan { get; set; }
+    public DeliveryPlan DeliveryPlan { get; set; }
 
+    public Lesson(){}
     public Lesson(DateTime start, DateTime end, string title)
     {
         Start = start;

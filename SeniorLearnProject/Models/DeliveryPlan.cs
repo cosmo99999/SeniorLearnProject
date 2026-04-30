@@ -10,9 +10,8 @@ public class DeliveryPlan
 {
     public int Id { get; set; }
     public bool IsCourse { get; set; }
-    public List<Lesson> Lessons { get; private set; } = default;
-
-    private DeliveryPlan(){}
+    public List<Lesson> Lessons { get; private set; } = new();
+    public DeliveryPlan(){}
     public DeliveryPlan(List<Lesson> lessons, bool isCourse)
     {
         Lessons = lessons;
