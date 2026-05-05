@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Data;
+using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject
 {
@@ -11,6 +12,7 @@ namespace SeniorLearnProject
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<SchedulerService>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<SeniorLearnContext>(options =>
             {
@@ -22,7 +24,6 @@ namespace SeniorLearnProject
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<SeniorLearnContext>();
             builder.Services.AddControllersWithViews();
-
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
