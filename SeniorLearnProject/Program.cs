@@ -30,10 +30,10 @@ namespace SeniorLearnProject
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<SeniorLearnContext>();
 
-                if (!context.Lessons.Any())
-                {
+                //if (!context.Lessons.Any())
+                //{
                     DataSeeder.SeedData(context);
-                }
+                //}
                     
             }
             // Configure the HTTP request pipeline.

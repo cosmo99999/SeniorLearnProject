@@ -13,29 +13,29 @@ namespace SeniorLearnProject.Data
             for (int i = 0; i < 5; i++)
             {
                 lessons1.Add(new Lesson
-                {
-                    Id = i,
-                    Title = $"Lesson {i}",
-                    Start = new DateTime(2022, 2, 1 + i),
-                    End = new DateTime(2022, 2, 2 + i)
-                });
+                (
+                    $"Lesson {i}",
+                    new DateTime(2022, 2, 1 + i),
+                    new DateTime(2022, 2, 2 + i)
+                ));
                 lessons2.Add(new Lesson
-                {
-                    Id = i + 5,
-                    Title = $"Lesson {i + 5}",
-                    Start = new DateTime(2027, 2, 1 + i),
-                    End = new DateTime(2027, 2, 2 + i)
-                });
+                (
+                    $"Lesson {i + 5}",
+                    new DateTime(2027, 2, 1 + i),
+                    new DateTime(2027, 2, 2 + i)
+                ));
             }
 
             var sMember = new Member();
             var pMember = new Member();
             sMember.AddRoleWithType(RoleType.Standard);
             pMember.AddRoleWithType(RoleType.Professional);
+            context.Members.Add(sMember);
+            context.Members.Add(pMember);
 
-            sMember.AddEnrolment(lessons1);
+            sMember.AddEnrolments(lessons1);
             pMember.AddDeliveryPlan(lessons1, true);
-            sMember.AddEnrolment(lessons2);
+            sMember.AddEnrolments(lessons2);
             pMember.AddDeliveryPlan(lessons2, false);
 
             context.Members.Add(sMember);

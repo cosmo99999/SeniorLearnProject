@@ -10,7 +10,7 @@ namespace SeniorLearnProject.Models;
 public class Member
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public int UserId { get; set; } = -1;
     public List<Enrolment> Enrolments { get; set; } = new();
     public List<DeliveryPlan> DeliveryPlans { get; set; } = new();
     public List<Role> Roles { get; set; } = new();
@@ -21,9 +21,12 @@ public class Member
     {
         DeliveryPlans.Add(new DeliveryPlan(lessons, isCourse));
     }
-    public void AddEnrolment(List<Lesson> lessons)
+    public void AddEnrolments(List<Lesson> lessons)
     {
-        Enrolments.Add(new Enrolment(lessons));
+        foreach (var  l in lessons)
+        {
+            Enrolments.Add(new Enrolment(this, l));
+        }
     }
     public void AssignRole(RoleType roleType)
     {
