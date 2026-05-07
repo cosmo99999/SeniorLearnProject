@@ -15,7 +15,6 @@ public class SchedulerService
     public SchedulerService(SeniorLearnContext context)
     {
         _context = context;
-       
     }
 
     public void AddDeliveryPlan(List<Lesson> lessoons, Member m, bool isCourse)
