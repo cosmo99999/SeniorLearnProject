@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -7,26 +8,17 @@ using System.Threading.Tasks;
 
 namespace SeniorLearnProject.Models;
 
-public enum RoleType
+public class Role : IdentityRole
 {
-    Standard,
-    Professional,
-    Honorary
-}
-public class Role
-{
-    public int Id { get; set; }
-    public DateTime StartDate { get; private set; }
-    public RoleType RoleType { get; private set; }
-
-    public bool IsActive { get; private set; }
-
-    private Role(){}
-    public Role(RoleType roleType)
+    public enum Type
     {
-        IsActive = true;
-        StartDate = DateTime.Now;
-        RoleType = roleType;
+        Admin,
+        Standard,
+        Professional,
+        Honorary
     }
-    
+    public bool IsActive { get; private set; }
+    public Type RoleType { get; private set; }
+    private Role() { }
+
 }

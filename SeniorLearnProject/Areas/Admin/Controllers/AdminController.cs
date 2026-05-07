@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using SeniorLearnProject.Data;
+using SeniorLearnProject.Services;
+
+namespace SeniorLearnProject.Areas.Admin.Controllers
+{
+    public class BaseController : Controller
+    {
+        private readonly SeniorLearnContext _context;
+        public BaseController(SeniorLearnContext context)
+        {
+            _context = context;
+        }
+    }
+}

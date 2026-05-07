@@ -10,12 +10,22 @@ namespace SeniorLearnProject.Models;
 public class Member
 {
     public int Id { get; set; }
-    public int UserId { get; set; } = -1;
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime paidUntil { get; set; } = DateTime.Now;
+    public User User { get; set; } 
     public List<Enrolment> Enrolments { get; set; } = new();
     public List<DeliveryPlan> DeliveryPlans { get; set; } = new();
-    public List<Role> Roles { get; set; } = new();
 
-    public Member(){}
+    public Member()
+    {
+        
+    }
+    public Member(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
 
     public void AddDeliveryPlan(List<Lesson> lessons, bool isCourse)
     {
@@ -27,69 +37,5 @@ public class Member
         {
             Enrolments.Add(new Enrolment(this, l));
         }
-    }
-    public void AssignRole(RoleType roleType)
-    {
-        var role = FindRoleForType(roleType);
-        if (role == null)
-        {
-            AddRoleWithType(roleType);
-        }
-        else
-        {
-            ActivateRole(role);
-        }
-    }
-    public void ActivateRole(Role role)
-    {
-
-    }
-    public void AddRoleWithType(RoleType roleType)
-    {
-        Roles.Add(new Role(roleType));
-    }
-    private bool IsProfesional()
-    {
-        foreach (Role r in Roles)
-        {
-            if (r.RoleType == RoleType.Professional)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    private bool IsStandard()
-    {
-        foreach (Role r in Roles)
-        {
-            if (r.RoleType == RoleType.Standard)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    private bool IsHonorary()
-    {
-        foreach (Role r in Roles)
-        {
-            if (r.RoleType == RoleType.Honorary)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    Role FindRoleForType(RoleType roleType)
-    {
-        foreach (Role r in Roles)
-        {
-            if (r.RoleType == roleType)
-            {
-                return r;
-            }
-        }
-        return null;
     }
 }

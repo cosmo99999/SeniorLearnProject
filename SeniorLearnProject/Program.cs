@@ -55,6 +55,11 @@ namespace SeniorLearnProject
             app.UseAuthorization();
 
             app.MapStaticAssets();
+            //members
+            app.MapControllerRoute(
+                name: "Areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+                .WithStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")

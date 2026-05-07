@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeniorLearnProject.Models;
+﻿using SeniorLearnProject.Models;
 
 namespace SeniorLearnProject.Data
 {
@@ -26,10 +25,8 @@ namespace SeniorLearnProject.Data
                 ));
             }
 
-            var sMember = new Member();
-            var pMember = new Member();
-            sMember.AddRoleWithType(RoleType.Standard);
-            pMember.AddRoleWithType(RoleType.Professional);
+            var sMember = new Member("rory", "coleman");
+            var pMember = new Member("cory", "roleman");
             context.Members.Add(sMember);
             context.Members.Add(pMember);
 
