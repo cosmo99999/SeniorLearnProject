@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Options;
 using SeniorLearnProject.Data;
+using SeniorLearnProject.Models;
 using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject
@@ -12,7 +15,6 @@ namespace SeniorLearnProject
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddScoped<SchedulerService>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<SeniorLearnContext>(options =>
             {
@@ -21,9 +23,24 @@ namespace SeniorLearnProject
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<SeniorLearnContext>();
+            builder.Services.AddDefaultIdentity<Models.User>(options =>
+            {
+               options.SignIn.RequireConfirmedAccount = false;
+               options.Password.RequireDigit = false;
+               options.Password.RequireNonAlphanumeric = false;
+               options.Password.RequiredLength = 1;
+               options.Password.RequireLowercase = false;
+               options.Password.RequireUppercase = false;
+                
+            })
+            .AddRoles<Role>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<Data.SeniorLearnContext>();
+
+            builder.Services.AddScoped<SchedulerService>();
+            builder.Services.AddScoped<AdminService>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -33,7 +50,7 @@ namespace SeniorLearnProject
 
                 //if (!context.Lessons.Any())
                 //{
-                    DataSeeder.SeedData(context);
+                    //DataSeeder.SeedMembersAndLessons(context);
                 //}
                     
             }

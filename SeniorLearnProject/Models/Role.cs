@@ -19,6 +19,6 @@ public class Role : IdentityRole
     }
     public bool IsActive { get; private set; }
     public Type RoleType { get; private set; }
-    private Role() { }
+    private Role(Type roleType) : base(roleType.ToString()) { }
 
 }

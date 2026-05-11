@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<SeniorLearnProject.Models.User>
+
+<div class="text-center">
+    <h2>The following users are awaiting approval</h2>
+    <ul>
+        @foreach(var u in Model){
+            <form>
+                <p>@u.UserName</p>
+                
+            </form>
+        }
+    </ul>
+</div>

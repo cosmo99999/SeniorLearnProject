@@ -4,7 +4,7 @@ namespace SeniorLearnProject.Data
 {
     public static class DataSeeder
     {
-        public static void SeedData(SeniorLearnContext context)
+        public static void SeedMembersAndLessons(SeniorLearnContext context)
         {
             List<Lesson> lessons1 = new List<Lesson>();
             List<Lesson> lessons2 = new List<Lesson>();
