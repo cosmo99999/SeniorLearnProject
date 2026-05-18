@@ -18,22 +18,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SeniorLearnProject.Models.Identity;
 
 namespace SeniorLearnProject.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<Models.User> _signInManager;
-        private readonly UserManager<Models.User> _userManager;
-        private readonly IUserStore<Models.User> _userStore;
-        private readonly IUserEmailStore<Models.User> _emailStore;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<Models.User> userManager,
-            IUserStore<Models.User> userStore,
-            SignInManager<Models.User> signInManager,
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
+            SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -153,27 +154,27 @@ namespace SeniorLearnProject.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private Models.User CreateUser()
+        private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<Models.User>();
+                return Activator.CreateInstance<User>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(Models.User)}'. " +
-                    $"Ensure that '{nameof(Models.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Models.Identity.User)}'. " +
+                    $"Ensure that '{nameof(Models.Identity.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<Models.User> GetEmailStore()
+        private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<Models.User>)_userStore;
+            return (IUserEmailStore<User>)_userStore;
         }
     }
 }

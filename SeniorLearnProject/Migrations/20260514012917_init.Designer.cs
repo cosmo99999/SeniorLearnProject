@@ -12,7 +12,7 @@ using SeniorLearnProject.Data;
 namespace SeniorLearnProject.Migrations
 {
     [DbContext(typeof(SeniorLearnContext))]
-    [Migration("20260511055439_init")]
+    [Migration("20260514012917_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -164,59 +164,7 @@ namespace SeniorLearnProject.Migrations
                     b.ToTable("Enrolments");
                 });
 
-            modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DeliveryPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliveryPlanId");
-
-                    b.ToTable("Lessons");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Member", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("paidUntil")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.Role", b =>
+            modelBuilder.Entity("SeniorLearnProject.Models.Identity.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -224,9 +172,6 @@ namespace SeniorLearnProject.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -249,7 +194,7 @@ namespace SeniorLearnProject.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("SeniorLearnProject.Models.User", b =>
+            modelBuilder.Entity("SeniorLearnProject.Models.Identity.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -321,13 +266,16 @@ namespace SeniorLearnProject.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SeniorLearnProject.Models.UserRole", b =>
+            modelBuilder.Entity("SeniorLearnProject.Models.Identity.UserRole", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -336,9 +284,61 @@ namespace SeniorLearnProject.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DeliveryPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryPlanId");
+
+                    b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("SeniorLearnProject.Models.Member", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("paidUntil")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Members");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.Role", null)
+                    b.HasOne("SeniorLearnProject.Models.Identity.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -347,7 +347,7 @@ namespace SeniorLearnProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.User", null)
+                    b.HasOne("SeniorLearnProject.Models.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,7 +356,7 @@ namespace SeniorLearnProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.User", null)
+                    b.HasOne("SeniorLearnProject.Models.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -365,7 +365,7 @@ namespace SeniorLearnProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.User", null)
+                    b.HasOne("SeniorLearnProject.Models.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -398,6 +398,30 @@ namespace SeniorLearnProject.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("SeniorLearnProject.Models.Identity.User", b =>
+                {
+                    b.HasOne("SeniorLearnProject.Models.Member", "Member")
+                        .WithOne("User")
+                        .HasForeignKey("SeniorLearnProject.Models.Identity.User", "MemberId");
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("SeniorLearnProject.Models.Identity.UserRole", b =>
+                {
+                    b.HasOne("SeniorLearnProject.Models.Identity.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeniorLearnProject.Models.Identity.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>
                 {
                     b.HasOne("SeniorLearnProject.Models.DeliveryPlan", "DeliveryPlan")
@@ -407,30 +431,6 @@ namespace SeniorLearnProject.Migrations
                         .IsRequired();
 
                     b.Navigation("DeliveryPlan");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.User", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.Member", "Member")
-                        .WithOne("User")
-                        .HasForeignKey("SeniorLearnProject.Models.User", "MemberId");
-
-                    b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("SeniorLearnProject.Models.UserRole", b =>
-                {
-                    b.HasOne("SeniorLearnProject.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorLearnProject.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.DeliveryPlan", b =>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Models;
+using SeniorLearnProject.Models.Identity;
 
 namespace SeniorLearnProject.Data
 {
@@ -23,10 +24,10 @@ namespace SeniorLearnProject.Data
             base.OnConfiguring(optionsBuilder);
 
         }
-        protected override async void OnModelCreating(ModelBuilder mb)
+        protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
-            mb.Entity<Models.UserRole>().HasKey(ur => new {ur.UserId, ur.RoleId});
+            
         }
         
     }

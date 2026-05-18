@@ -1,9 +1,19 @@
-﻿using SeniorLearnProject.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using SeniorLearnProject.Models;
+using SeniorLearnProject.Models.Identity;
 
 namespace SeniorLearnProject.Data
 {
     public static class DataSeeder
     {
+        public static void SeedRoles(SeniorLearnContext context)
+        {
+            context.Roles.Add(new Role(Role.Type.Admin));
+            context.Roles.Add(new Role(Role.Type.Standard));
+            context.Roles.Add(new Role(Role.Type.Professional));
+            context.Roles.Add(new Role(Role.Type.Honorary));
+            context.SaveChanges();
+        }
         public static void SeedMembersAndLessons(SeniorLearnContext context)
         {
             List<Lesson> lessons1 = new List<Lesson>();

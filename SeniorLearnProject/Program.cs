@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using SeniorLearnProject.Data;
-using SeniorLearnProject.Models;
+using SeniorLearnProject.Models.Identity;
 using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject
@@ -23,7 +24,7 @@ namespace SeniorLearnProject
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<Models.User>(options =>
+            builder.Services.AddDefaultIdentity<User>(options =>
             {
                options.SignIn.RequireConfirmedAccount = false;
                options.Password.RequireDigit = false;
@@ -39,8 +40,16 @@ namespace SeniorLearnProject
 
             builder.Services.AddScoped<SchedulerService>();
             builder.Services.AddScoped<AdminService>();
+            builder.Services.AddScoped<UserManagementService>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            builder.Services.AddTransient<IAuthorizationHandler, ActiveRoleHandler>();
+
+            builder.Services.AddAuthorization(o =>
+            {
+                o.AddPolicy("ActiveRolePolicy", policy =>
+                    policy.AddRequirements(new ActiveRolePolicy()));
+            });
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -48,11 +57,9 @@ namespace SeniorLearnProject
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<SeniorLearnContext>();
 
-                //if (!context.Lessons.Any())
-                //{
-                    //DataSeeder.SeedMembersAndLessons(context);
-                //}
-                    
+                DataSeeder.SeedUsers(context);
+                DataSeeder.SeedRoles(context);
+
             }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

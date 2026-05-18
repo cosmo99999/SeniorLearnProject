@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SeniorLearnProject.Areas.Admin.Models;
 using SeniorLearnProject.Data;
-using SeniorLearnProject.Models;
+using SeniorLearnProject.Models.Identity;
 using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject.Areas.Admin.Controllers;

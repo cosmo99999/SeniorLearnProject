@@ -9,6 +9,6 @@ public class RegisterMember
     public string Email {get;set;}
     public DateTime paidUntil = DateTime.Now;
 
-    public
+    //public
     
 }

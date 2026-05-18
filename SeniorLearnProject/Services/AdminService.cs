@@ -2,7 +2,7 @@ using System;
 using System.Formats.Asn1;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Data;
-using SeniorLearnProject.Models;
+using SeniorLearnProject.Models.Identity;
 
 namespace SeniorLearnProject.Services;
 
