@@ -11,7 +11,7 @@ namespace SeniorLearnProject
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -55,11 +55,15 @@ namespace SeniorLearnProject
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var userManager = services.GetRequiredService<UserManager<User>>();
                 var context = services.GetRequiredService<SeniorLearnContext>();
-
-                DataSeeder.SeedUsers(context);
-                DataSeeder.SeedRoles(context);
-
+                var dataExists = context.Users.Any<User>();
+                if (!dataExists)
+                {
+                    DataSeeder.SeedRoles(context);
+                    await DataSeeder.SeedUsers(userManager);
+                }
+                context.SaveChanges();
             }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

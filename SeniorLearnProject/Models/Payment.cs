@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace SeniorLearnProject.Models;
 
 
-internal class Payment
+public class Payment
 {
-    int id;
-    Member member;
-    DateTime date;
+    public int id {get; set;}
+    public Member member {get; set;}
+    public DateTime date {get; set;}
 }

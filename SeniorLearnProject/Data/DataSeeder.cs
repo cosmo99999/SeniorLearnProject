@@ -14,6 +14,21 @@ namespace SeniorLearnProject.Data
             context.Roles.Add(new Role(Role.Type.Honorary));
             context.SaveChanges();
         }
+        public static async Task SeedUsers(UserManager<User> um)
+        {
+            User admin = new User();
+            admin.Email = "admin@seniorlearn.com";
+            admin.UserName = "admin@seniorlearn.com";
+            await um.CreateAsync(admin, "admin");
+            User smember = new User();
+            smember.Email = "smember@seniorlearn.com";
+            smember.UserName = "smember@seniorlearn.com";
+            await um.CreateAsync(smember, "member");
+            User pmember = new User();
+            pmember.Email = "smember@seniorlearn.com";
+            pmember.UserName = "smember@seniorlearn.com";
+            await um.CreateAsync(pmember, "member");
+        }
         public static void SeedMembersAndLessons(SeniorLearnContext context)
         {
             List<Lesson> lessons1 = new List<Lesson>();
