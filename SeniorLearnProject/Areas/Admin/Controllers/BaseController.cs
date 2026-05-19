@@ -5,7 +5,7 @@ using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject.Areas.Admin.Controllers;
 [Area("Admin")]
-[Authorize(Roles ="Admin")]
+[Authorize(Roles ="Admin", Policy = "ActiveRolePolicy")]
 public class BaseController : Controller
 {
     private readonly SeniorLearnContext _context;

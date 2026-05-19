@@ -18,6 +18,10 @@ public class Role : IdentityRole
         Honorary
     }
     public Type RoleType { get; private set; }
-    public Role(Type roleType) : base(roleType.ToString()) { }
+    public Role(Type roleType) : base(roleType.ToString())
+    {
+        RoleType = roleType;
+        NormalizedName = roleType.ToString().ToUpper();
+    }
 
 }

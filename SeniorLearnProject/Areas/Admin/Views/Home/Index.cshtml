@@ -1,16 +1,14 @@
-﻿@using SeniorLearnProject.Models.Identity;
+﻿@using SeniorLearnProject.Areas.Admin.Models;
 @{
     ViewData["Title"] = "Home Page";
 }
-@model List<User>
-
+@model List<UserModel>
 <div class="text-center">
     <h2>The following users are awaiting approval</h2>
     <ul>
         @foreach(var u in Model){
             <form>
-                <p>@u.UserName</p>
-                
+                <p>@u.Email</p>
             </form>
         }
     </ul>

@@ -20,7 +20,6 @@ public class StandardController : BaseController
 
     public IActionResult Details()
     {
-       
         return View();
     }
 }

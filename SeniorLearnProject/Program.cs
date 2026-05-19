@@ -39,8 +39,7 @@ namespace SeniorLearnProject
             .AddEntityFrameworkStores<Data.SeniorLearnContext>();
 
             builder.Services.AddScoped<SchedulerService>();
-            builder.Services.AddScoped<AdminService>();
-            builder.Services.AddScoped<UserManagementService>();
+            builder.Services.AddScoped<UserService>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddTransient<IAuthorizationHandler, ActiveRoleHandler>();
@@ -57,13 +56,7 @@ namespace SeniorLearnProject
                 var services = scope.ServiceProvider;
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var context = services.GetRequiredService<SeniorLearnContext>();
-                var dataExists = context.Users.Any<User>();
-                if (!dataExists)
-                {
-                    DataSeeder.SeedRoles(context);
-                    await DataSeeder.SeedUsers(userManager);
-                }
-                context.SaveChanges();
+                await DataSeeder.SeedData(context, userManager);
             }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -9,15 +9,22 @@ public class ActiveRolePolicy : IAuthorizationRequirement { }
 
 public class ActiveRoleHandler : AuthorizationHandler<ActiveRolePolicy>
 {
-    private readonly UserManagementService _uService;
-    public ActiveRoleHandler(UserManagementService uService)
+    private readonly UserService _uService;
+    public ActiveRoleHandler(UserService uService)
     {
         _uService = uService;
     }
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ActiveRolePolicy requirement)
+    protected async override Task HandleRequirementAsync(AuthorizationHandlerContext context, ActiveRolePolicy requirement)
     {
-        var roles = context.Requirements.OfType<RolesAuthorizationRequirement>().ToList();
-        bool hasActiveRole = _uService.DoesUserHaveActiveRole(context.User, "roles").Result;
-        return Task.CompletedTask;
+        var roles = context.Requirements.OfType<RolesAuthorizationRequirement>();
+        var allowedroles = roles.SelectMany(r => r.AllowedRoles);
+        var ActiveRoleOrNull = await _uService.DoesUserHaveActiveRole(context.User, "admin");
+
+        if (ActiveRoleOrNull != null)
+        {
+            context.Succeed(requirement);
+            return;
+        }
+        context.Fail();
     }
 }
