@@ -2,14 +2,14 @@
 using SeniorLearnProject.Data;
 using SeniorLearnProject.Services;
 
-namespace SeniorLearnProject.Areas.Admin.Controllers
+namespace SeniorLearnProject.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class BaseController : Controller
 {
-    public class BaseController : Controller
+    private readonly SeniorLearnContext _context;
+    public BaseController(SeniorLearnContext context)
     {
-        private readonly SeniorLearnContext _context;
-        public BaseController(SeniorLearnContext context)
-        {
-            _context = context;
-        }
+        _context = context;
     }
 }

@@ -1,0 +1,21 @@
+@page
+@model SeniorLearnProject.Areas.Member.Pages.Lessons.CreateModel
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize(Roles = "ProfessionalMember")]
+
+<h2>Create a New Lesson</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Lesson.Title"></label>
+        <input asp-for="Lesson.Title" class="form-control" />
+        <span asp-validation-for="Lesson.Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lesson.Description"></label>
+        <textarea asp-for="Lesson.Description" class="form-control"></textarea>
+        <span asp-validation-for="Lesson.Description" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Lesson</button>
+</form>
