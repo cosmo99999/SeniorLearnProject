@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeniorLearnProject.Models;
+namespace SeniorLearnProject.Models.Identity;
 
 public class Role : IdentityRole
 {
@@ -17,8 +17,11 @@ public class Role : IdentityRole
         Professional,
         Honorary
     }
-    public bool IsActive { get; private set; }
     public Type RoleType { get; private set; }
-    private Role() { }
+    public Role(Type roleType) : base(roleType.ToString())
+    {
+        RoleType = roleType;
+        NormalizedName = roleType.ToString().ToUpper();
+    }
 
 }

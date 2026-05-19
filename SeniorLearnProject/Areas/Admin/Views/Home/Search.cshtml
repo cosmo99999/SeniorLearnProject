@@ -1,0 +1,12 @@
+﻿@using SeniorLearnProject.Areas.Admin.Models;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<UserModel>
+<div class="text-center">
+    <form method="get" asp-controller="Home" asp-action="Search">
+        <input type="text" name="search" placeholder="Enter name"/>
+        <button onclick="submit">Search</button>
+    </form>
+</div>

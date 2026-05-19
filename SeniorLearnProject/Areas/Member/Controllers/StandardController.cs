@@ -10,7 +10,7 @@ public class StandardController : BaseController
     public StandardController(SeniorLearnContext context, SchedulerService sServive)
         :base(context)
     {
-
+        _sService = sServive;
     }
 
     public IActionResult Index()
@@ -20,7 +20,6 @@ public class StandardController : BaseController
 
     public IActionResult Details()
     {
-       
         return View();
     }
 }

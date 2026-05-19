@@ -1,18 +1,21 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Options;
 using SeniorLearnProject.Data;
+using SeniorLearnProject.Models.Identity;
 using SeniorLearnProject.Services;
 
 namespace SeniorLearnProject
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddScoped<SchedulerService>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<SeniorLearnContext>(options =>
             {
@@ -21,21 +24,39 @@ namespace SeniorLearnProject
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<SeniorLearnContext>();
+            builder.Services.AddDefaultIdentity<User>(options =>
+            {
+               options.SignIn.RequireConfirmedAccount = false;
+               options.Password.RequireDigit = false;
+               options.Password.RequireNonAlphanumeric = false;
+               options.Password.RequiredLength = 1;
+               options.Password.RequireLowercase = false;
+               options.Password.RequireUppercase = false;
+                
+            })
+            .AddRoles<Role>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<Data.SeniorLearnContext>();
+
+            builder.Services.AddScoped<SchedulerService>();
+            builder.Services.AddScoped<UserService>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
+            builder.Services.AddTransient<IAuthorizationHandler, ActiveRoleHandler>();
+
+            builder.Services.AddAuthorization(o =>
+            {
+                o.AddPolicy("ActiveRolePolicy", policy =>
+                    policy.AddRequirements(new ActiveRolePolicy()));
+            });
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var userManager = services.GetRequiredService<UserManager<User>>();
                 var context = services.GetRequiredService<SeniorLearnContext>();
-
-                //if (!context.Lessons.Any())
-                //{
-                    DataSeeder.SeedData(context);
-                //}
-                    
+                await DataSeeder.SeedData(context, userManager);
             }
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
