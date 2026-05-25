@@ -1,0 +1,40 @@
+﻿@using System.ComponentModel
+@using SeniorLearnProject.Areas.Admin.Models;
+@using SeniorLearnProject.Models.Identity
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model UserModel
+<div class="text-center">
+    <h2>Details For @Model.Email</h2>
+    <form method="post" asp-controller="Home" asp-action="Details">
+        <input type="hidden" name="Email" value="@Model.Email"/>
+        <input type="hidden" name="Id" value="@Model.Id"/>
+        <input type="hidden" name="Roles[0].role" value="@Model.Roles[0].role"/>
+        <input asp-for="FirstName" placeholder="Users First Name"/>
+        <input type="checkbox" name="Roles[0].isActive" value="true" @(Model.Roles[0].isActive ? "checked" : "")/>
+        <input type="checkbox" name="Roles[1].isActive" value="true" @(Model.Roles[1].isActive ? "checked" : "")/>
+        <input type="checkbox" name="Roles[2].isActive" value="true" @(Model.Roles[2].isActive ? "checked" : "")/>
+        <input type="checkbox" name="Roles[3].isActive" value="true" @(Model.Roles[3].isActive ? "checked" : "")/>
+        <button type="submit" class="form-submit">Update</button>
+    </form>
+</div>
+
+
+    @* <h2>Details For @Model.Email</h2>
+    <form method="post" asp-controller="Home" asp-action="Details">
+        <input type="hidden" name="Email" value="@Model.Email"/>
+        <input type="hidden" name="Id" value="@Model.Id"/>
+        <input asp-for="FirstName" placeholder="Users First Name"/>
+        @for(int i = 0; i < @Model.Roles.Count(); i++){
+            @* <h3>@Model.Roles[i].role.ToString()</h3> 
+            <input type="hidden" name="Roles[@i].role" value="@Model.Roles[i].role"/>  
+            <select name="Roles[@i].isActive" class="form-control">
+                <option value="true" selected="@(Model.Roles[i].isActive ? "selected" : null)">Yes</option>
+                <option value="false" selected="@(!Model.Roles[i].isActive ? "selected" : null)">No</option>
+            </select>
+        }
+        
+        <button type="submit" class="form-submit">Update</button>
+    </form> 
+    *@

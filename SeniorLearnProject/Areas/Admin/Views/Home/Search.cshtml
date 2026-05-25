@@ -5,8 +5,27 @@
 }
 @model List<UserModel>
 <div class="text-center">
-    <form method="get" asp-controller="Home" asp-action="Search">
-        <input type="text" name="search" placeholder="Enter name"/>
-        <button onclick="submit">Search</button>
+    <form method="post" asp-controller="Home" asp-action="Search">
+        <input type="text" name="name" placeholder="Enter name"/>
+        <button type="submit">Search</button>
     </form>
 </div>
+@if (Model != null){
+<div>
+    <table class="table">
+    <tr>
+        @foreach(var u in Model){
+            <th>
+                <p>@u.Email</p>
+            </th>
+            <th>
+                <form method ="get" asp-controller="Home" asp-action="Details">
+                    <input type="hidden" name="id" value="@u.Id"/>
+                    <button type="submit">View Details</button>
+                </form>
+            </th>
+        }
+    </tr>
+    </table>
+</div>
+}
