@@ -1,8 +1,86 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@using SeniorLearnProject.Areas.Member.Models
+@model MemberDashboardViewModel
+
+@{
+    ViewData["Title"] = "My Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="mb-1">Welcome back, @Model.FirstName!</h2>
+<p class="text-muted mb-4">@Model.Email</p>
+
+<div class="card mb-4 @(Model.MembershipActive ? "border-success" : "border-danger")">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="card-title mb-0">Membership Status</h5>
+            <small class="text-muted">Valid until @Model.PaidUntil.ToString("dd MMM yyyy")</small>
+        </div>
+        @if (Model.MembershipActive)
+        {
+            <span class="badge bg-success fs-6">Active</span>
+        }
+        else
+        {
+            <span class="badge bg-danger fs-6">Expired</span>
+        }
+    </div>
 </div>
+
+<h4 class="mb-3">Upcoming Lessons</h4>
+@if (!Model.UpcomingEnrolments.Any())
+{
+    <p class="text-muted">You have no upcoming lessons.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+        @foreach (var enrolment in Model.UpcomingEnrolments)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">@enrolment.Lesson.Title</h6>
+                        <p class="card-text mb-1">
+                            <strong>Start:</strong> @enrolment.Lesson.Start.ToString("dd MMM yyyy, h:mm tt")
+                        </p>
+                        <p class="card-text">
+                            <strong>End:</strong> @enrolment.Lesson.End.ToString("dd MMM yyyy, h:mm tt")
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@enrolment.Id" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<h4 class="mb-3">Enrolment History</h4>
+@if (!Model.PastEnrolments.Any())
+{
+    <p class="text-muted">No past lessons yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Lesson</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var enrolment in Model.PastEnrolments)
+            {
+                <tr>
+                    <td>@enrolment.Lesson.Title</td>
+                    <td>@enrolment.Lesson.Start.ToString("dd MMM yyyy")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@enrolment.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
