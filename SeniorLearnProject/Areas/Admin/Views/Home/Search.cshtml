@@ -1,7 +1,9 @@
-﻿@using SeniorLearnProject.Areas.Admin.Models;
+﻿@using Microsoft.AspNetCore.Identity
+@using SeniorLearnProject.Areas.Admin.Models;
 
 @{
     ViewData["Title"] = "Home Page";
+    string userInfo = "";
 }
 @model List<UserModel>
 <div class="text-center">
@@ -13,10 +15,23 @@
 @if (Model != null){
 <div>
     <table class="table">
-    <tr>
         @foreach(var u in Model){
+        @if(u.MemberId == null){
+            userInfo = "No Member";
+        }
+        for(int i = 0; i < u.RoleBools.Length; i++){
+            bool thisRole = u.RoleBools[i];
+            string thisString = u.RoleStrings[i];
+            if(!thisRole) continue;
+            userInfo = thisString;
+            if(thisString == "Admin") break;
+        }
+        <tr>
             <th>
                 <p>@u.Email</p>
+            </th>
+            <th>
+                <p>@userInfo</p>
             </th>
             <th>
                 <form method ="get" asp-controller="Home" asp-action="Details">
@@ -24,8 +39,8 @@
                     <button type="submit">View Details</button>
                 </form>
             </th>
+        </tr>
         }
-    </tr>
     </table>
 </div>
 }

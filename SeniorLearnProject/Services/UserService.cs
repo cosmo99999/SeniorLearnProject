@@ -60,12 +60,37 @@ public class UserService
     public async Task<List<Areas.Admin.Models.UserModel>> ConvertUserToAdminUserModel(List<User> users)
     {
         List<UserModel> result = new();
+        var allRoles = await _context.Roles.OrderBy(r => r.RoleType).ToListAsync();
         foreach(var u in users)
         {
             UserModel m = new();
+            var userRoles = await _context.UserRoles
+                .Include(us => us.Role)
+                .Where(us => us.UserId == u.Id)
+                .Select(u => new {
+                    RoleType = (int)u.Role.RoleType,
+                    u.IsActive
+                })
+                .ToListAsync();
+            m.RoleStrings = new string[allRoles.Count()];
+            m.RoleBools = new bool[allRoles.Count()];
             m.Id = u.Id;
             m.Email = u!.Email;
             result.Add(m);
+            for (int i = 0; i < allRoles.Count(); i++)
+            {
+                m.RoleStrings[i] = allRoles[i].Name;
+            }
+
+            for (int i = 0; i < userRoles.Count(); i++)
+            {
+                if (!userRoles[i].IsActive) continue;
+                m.RoleBools[userRoles[i].RoleType] = true;
+            }
+            if (u.MemberId.HasValue)
+            {
+                m.MemberId = u.MemberId.Value;
+            }
         }
         return result;
     }
@@ -101,7 +126,13 @@ public class UserService
 
         if (user.MemberId.HasValue)
         {
-            m.MemberId = user.MemberId.Value;
+            var mem = await _context.Members.Where(m => m.Id == user.MemberId).FirstOrDefaultAsync();
+            if(mem != null)
+            {
+                m.MemberId = user.MemberId.Value;
+                m.FirstName = mem.FirstName;
+                m.LastName = mem.LastName;
+            } 
         }
         return m;
     }
@@ -121,23 +152,33 @@ public class UserService
         if (um == null) return;
         var user = await _context.Users.Where(u => u.Id == um.Id).FirstAsync();
 
-        //foreach(var umRoles in um.Roles)
-        //{
-        //    var role = await _context.Roles.Where(r => r.Name == umRoles.role.ToString()).FirstAsync();
-        //    var userInRole = await _context.UserRoles.Where(u => u.UserId == user.Id && u.RoleId == role.Name).FirstOrDefaultAsync();
-        //    if(userInRole != null)
-        //    {
-        //        userInRole.IsActive = true;
-        //    }
-        //    else
-        //    {
-        //        UserRole ur = new();
-        //        ur.RoleId = role.Id;
-        //        ur.UserId = user.Id;
-        //        ur.IsActive = true;
-        //        _context.UserRoles.Add(ur);
-        //    }
-        //}
+        for(int i = 0; i < um.RoleBools.Length; i++)
+        {
+            var role = await _context.Roles.Where(r => r.Name == um.RoleStrings[i]).FirstAsync();
+            var userInRole = await _context.UserRoles.Where(u => u.UserId == user.Id && u.RoleId == role.Id).FirstOrDefaultAsync();
+            if(um.RoleBools[i] == true)
+            {
+                if(userInRole != null)
+                {
+                    userInRole.IsActive = true;
+                }
+                else
+                {
+                    UserRole ur = new();
+                    ur.RoleId = role.Id;
+                    ur.UserId = user.Id;
+                    ur.IsActive = true;
+                    _context.UserRoles.Add(ur);
+                }
+            }
+            else
+            {
+                if(userInRole != null)
+                {
+                    userInRole.IsActive = false;
+                }
+            }
+        }
 
         await _context.SaveChangesAsync();
     }
