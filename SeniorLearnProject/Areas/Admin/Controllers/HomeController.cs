@@ -30,16 +30,24 @@ public class HomeController : BaseController
         var uModel = await _uService.ConvertUserToAdminUserModel(u);
         return View(uModel);
     }
+
+
     [HttpPost]
     public async Task<IActionResult> Details(UserModel model)
     {
+        if(ModelState.IsValid == false)
+        {
+            return View(model);
+        }
         if (!model.MemberId.HasValue)
         {
-            _uService.CreateMember(model);
+            await _uService.CreateMember(model);
         }
         await _uService.SaveUserModelChanges(model);
-        return View(model);
+        return View("Search");
     }
+
+
     public async Task<IActionResult> Search()
     {
         return View();

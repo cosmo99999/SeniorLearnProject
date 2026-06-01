@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Models;
 using SeniorLearnProject.Models.Identity;
+using System.Reflection.Emit;
 
 namespace SeniorLearnProject.Data
 {
@@ -27,7 +28,13 @@ namespace SeniorLearnProject.Data
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
-            
+            mb.Entity<UserRole>(ur =>
+            {
+                ur.HasOne(ur => ur.Role)
+                .WithMany()
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
         }
         
     }

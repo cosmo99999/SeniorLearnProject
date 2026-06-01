@@ -2,39 +2,52 @@
 @using SeniorLearnProject.Areas.Admin.Models;
 @using SeniorLearnProject.Models.Identity
 @{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
+	string title;
+	string buttonTitle;
+	@if (Model.MemberId.HasValue)
+	{
+		title = $"Details For {Model.Email}";
+		buttonTitle = "Update";
+	}
+	else
+	{
+		title = $"Create Member For {Model.Email}";
+		buttonTitle = "Create";
+	}
 }
 @model UserModel
-<div class="text-center">
-    <h2>Details For @Model.Email</h2>
-    <form method="post" asp-controller="Home" asp-action="Details">
-        <input type="hidden" name="Email" value="@Model.Email"/>
-        <input type="hidden" name="Id" value="@Model.Id"/>
-        <input type="hidden" name="Roles[0].role" value="@Model.Roles[0].role"/>
-        <input asp-for="FirstName" placeholder="Users First Name"/>
-        <input type="checkbox" name="Roles[0].isActive" value="true" @(Model.Roles[0].isActive ? "checked" : "")/>
-        <input type="checkbox" name="Roles[1].isActive" value="true" @(Model.Roles[1].isActive ? "checked" : "")/>
-        <input type="checkbox" name="Roles[2].isActive" value="true" @(Model.Roles[2].isActive ? "checked" : "")/>
-        <input type="checkbox" name="Roles[3].isActive" value="true" @(Model.Roles[3].isActive ? "checked" : "")/>
-        <button type="submit" class="form-submit">Update</button>
-    </form>
+
+
+<h4>@title</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Home" asp-action="Details">
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">First Name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Last Name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+			@for(int i = 0; i < Model.RoleBools.Length;i++){
+			<div class="form-group">
+                <label>@Model.RoleStrings[i]
+                <input type="checkbox" asp-for="@Model.RoleBools[i]"/>
+				</label>
+				<input type="hidden" asp-for="@Model.RoleStrings[i]" />
+            </div>
+			}
+            <div class="form-group mt-3">
+                <input type="submit" value=@buttonTitle class="btn btn-primary w-100" />
+            </div>
+			<input type="hidden" asp-for="@Model.Email" />
+			<input type="hidden" asp-for="@Model.Id" />
+        </form>
+    </div>
 </div>
-
-
-    @* <h2>Details For @Model.Email</h2>
-    <form method="post" asp-controller="Home" asp-action="Details">
-        <input type="hidden" name="Email" value="@Model.Email"/>
-        <input type="hidden" name="Id" value="@Model.Id"/>
-        <input asp-for="FirstName" placeholder="Users First Name"/>
-        @for(int i = 0; i < @Model.Roles.Count(); i++){
-            @* <h3>@Model.Roles[i].role.ToString()</h3> 
-            <input type="hidden" name="Roles[@i].role" value="@Model.Roles[i].role"/>  
-            <select name="Roles[@i].isActive" class="form-control">
-                <option value="true" selected="@(Model.Roles[i].isActive ? "selected" : null)">Yes</option>
-                <option value="false" selected="@(!Model.Roles[i].isActive ? "selected" : null)">No</option>
-            </select>
-        }
-        
-        <button type="submit" class="form-submit">Update</button>
-    </form> 
-    *@

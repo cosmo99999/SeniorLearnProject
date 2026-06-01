@@ -406,10 +406,10 @@ namespace SeniorLearnProject.Migrations
 
             modelBuilder.Entity("SeniorLearnProject.Models.Identity.UserRole", b =>
                 {
-                    b.HasOne("SeniorLearnProject.Models.Identity.Role", null)
+                    b.HasOne("SeniorLearnProject.Models.Identity.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SeniorLearnProject.Models.Identity.User", null)
@@ -417,6 +417,8 @@ namespace SeniorLearnProject.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("SeniorLearnProject.Models.Lesson", b =>

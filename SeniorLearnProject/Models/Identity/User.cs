@@ -6,7 +6,6 @@ public class User : IdentityUser
     public Member? Member { get; set; }
     public int? MemberId { get; set; }
     List<UserRole> Roles { get; set; }
-    //unsafe! for seeding
     public User()
     {
     }
