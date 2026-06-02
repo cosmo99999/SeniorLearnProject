@@ -25,20 +25,21 @@ public class UserService
         }
         return u;
     }
-    public async Task<UserRole> DoesUserHaveActiveRole(ClaimsPrincipal claim, string role)
+    public async Task<bool> DoesUserHaveActiveRole(ClaimsPrincipal claim, string role)
     {
         
         var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == claim.Identity!.Name);
+        if (user == null) return false;
         var roleType = await _context.Roles.FirstOrDefaultAsync(r => r.Name == role);
         
         var applicableRole = await _context.UserRoles.FirstOrDefaultAsync(u => u.UserId == user!.Id && u.RoleId == roleType!.Id);
 
-        if(applicableRole == null) return null;
+        if(applicableRole == null) return false;
         if (applicableRole!.IsActive)
         {
-            return applicableRole;
+            return true;
         }
-        return null;
+        return false;
     }
     public async Task<List<User>> GetUsersWithNoMember()
     {
