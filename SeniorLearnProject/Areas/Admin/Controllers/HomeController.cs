@@ -35,11 +35,11 @@ public class HomeController : BaseController
     [HttpPost]
     public async Task<IActionResult> Details(UserModel model)
     {
-        if(ModelState.IsValid == false)
+        if (ModelState.IsValid == false)
         {
             return View(model);
         }
-        if (!model.MemberId.HasValue)
+        if (!model.MemberId.HasValue && !model.isAdmin)
         {
             await _uService.CreateMember(model);
         }
@@ -59,13 +59,5 @@ public class HomeController : BaseController
         List<UserModel> uModels = await _uService.ConvertUserToAdminUserModel(users);
         return View(uModels);
     }
-    // [HttpPost]
-    // public async Task<bool> Index(RegisterMember m)
-    // {
-    //     if (ModelState.IsValid)
-    //     {
-            
-    //     }
-    // }
 
 }

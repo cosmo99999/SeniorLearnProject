@@ -5,7 +5,7 @@
 	ViewData["Title"] = "Home Page";
 	string title;
 	string buttonTitle;
-	@if (Model.MemberId.HasValue)
+	@if (Model.MemberId.HasValue || Model.isAdmin)
 	{
 		title = $"Details For {Model.Email}";
 		buttonTitle = "Update";
@@ -48,6 +48,7 @@
             </div>
 			<input type="hidden" asp-for="@Model.Email" />
 			<input type="hidden" asp-for="@Model.Id" />
+			<input type="hidden" asp-for="@Model.isAdmin" />
         </form>
     </div>
 </div>

@@ -18,12 +18,15 @@ public class ActiveRoleHandler : AuthorizationHandler<ActiveRolePolicy>
     {
         var roles = context.Requirements.OfType<RolesAuthorizationRequirement>();
         var allowedroles = roles.SelectMany(r => r.AllowedRoles);
-        var hasActiveRole = await _uService.DoesUserHaveActiveRole(context.User, "admin");
-
-        if (hasActiveRole)
+        
+        foreach(var r in allowedroles)
         {
-            context.Succeed(requirement);
-            return;
+            var hasRole = await _uService.DoesUserHaveActiveRole(context.User, r);
+            if(hasRole)
+            {
+                context.Succeed(requirement);
+                return;
+            }
         }
         context.Fail();
     }

@@ -17,5 +17,6 @@ public class UserModel
     public string Email {get;set;} = default!;
     public DateTime PaidUntil { get; set; }  = DateTime.Now;
     public bool[] RoleBools { get; set; }
-    public string[] RoleStrings { get; set; } 
+    public string[] RoleStrings { get; set; }
+    public bool isAdmin { get; set; }
 }
