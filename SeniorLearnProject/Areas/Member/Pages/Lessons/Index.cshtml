@@ -1,0 +1,128 @@
+@page
+@model SeniorLearnProject.Areas.Member.Pages.Lessons.IndexModel
+@{
+    ViewData["Title"] = "Lessons List";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h1 class="display-5 text-dark fw-bold m-0">Lessons</h1>
+            <p class="text-muted m-0 fs-5">Manage and organize all your lessons</p>
+        </div>
+        <a asp-page="./Create" class="btn btn-primary btn-lg shadow-sm px-4 d-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+            </svg>
+            Create New Lesson
+        </a>
+    </div>
+
+
+    @if (!Model.Lessons.Any())
+    {
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-light">
+            <div class="card-body">
+                <div class="mb-4 text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-calendar2-x-fill" viewBox="0 0 16 16">
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5m9.954 3H2.545c-.3 0-.545.224-.545.5v1h12v-1c0-.276-.244-.5-.546-.5m-2.6 5.85a.5.5 0 0 0-.708-.708L8 10.293 5.854 8.146a.5.5 0 1 0-.708.708L7.293 11l-2.147 2.146a.5.5 0 0 0 .708.708L8 11.707l2.146 2.147a.5.5 0 0 0 .708-.708L8.707 11z"/>
+                    </svg>
+                </div>
+                <h3 class="fw-bold text-dark mb-2">No Lessons Found</h3>
+                <p class="text-muted mb-4 max-width-md mx-auto">There are no lessons created yet. Get started by creating your very first lesson.</p>
+                <a asp-page="./Create" class="btn btn-primary shadow-sm px-4">Create Lesson</a>
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light py-3 border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3 text-secondary text-uppercase fs-6 fw-semibold">Title</th>
+                            <th class="py-3 text-secondary text-uppercase fs-6 fw-semibold">Start Time</th>
+                            <th class="py-3 text-secondary text-uppercase fs-6 fw-semibold">End Time</th>
+                            <th class="py-3 text-secondary text-uppercase fs-6 fw-semibold">Duration</th>
+                            <th class="pe-4 py-3 text-end text-secondary text-uppercase fs-6 fw-semibold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var lesson in Model.Lessons)
+                        {
+                            var duration = lesson.End - lesson.Start;
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                            @if (lesson.DeliveryPlan?.IsCourse == true)
+                                            {
+                                                <!-- Course icon: mortarboard -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-mortarboard-fill" viewBox="0 0 16 16">
+                                                    <path d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z" />
+                                                    <path d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0" />
+                                                </svg>
+                                            }
+                                            else
+                                            {
+                                                <!-- Default: book icon -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-book-half" viewBox="0 0 16 16">
+                                                    <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z" />
+                                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1" />
+                                                </svg>
+                                            }
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold text-dark fs-5">@lesson.Title</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 fs-6 text-secondary">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event text-muted" viewBox="0 0 16 16">
+                                            <path d="M11 6.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                        </svg>
+                                        @lesson.Start.ToString("MMM dd, yyyy HH:mm")
+                                    </div>
+                                </td>
+                                <td class="py-3 fs-6 text-secondary">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check text-muted" viewBox="0 0 16 16">
+                                            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                                        </svg>
+                                        @lesson.End.ToString("MMM dd, yyyy HH:mm")
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold px-2 py-1.5 rounded">
+                                        @duration.Hours hr @duration.Minutes mins
+                                    </span>
+                                </td>
+                                <td class="pe-4 py-3 text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a asp-page="./Edit" asp-route-id="@lesson.Id" class="btn btn-outline-secondary btn-sm rounded-3 d-flex align-items-center gap-1.5 px-3 py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.708-.707l.746-.747-1.11-1.11-1.796 1.796A1 1 0 0 0 1 12.204v1.86a1 1 0 0 0 1 1h1.86a1 1 0 0 0 .707-.293z"/>
+                                            </svg>
+                                            Edit
+                                        </a>
+                                        <a asp-page="./Delete" asp-route-id="@lesson.Id" class="btn btn-outline-danger btn-sm rounded-3 d-flex align-items-center gap-1.5 px-3 py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16H4.885a2 2 0 0 1-1.993-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.185a.5.5 0 0 0-.584.456l-.5 8.5a.5.5 0 0 0 .998.06l.5-8.5a.5.5 0 0 0-.414-.476q-.504.004-.998 0m-4.017-.18a.5.5 0 0 0-.456.584l.5 8.5A.5.5 0 0 0 7.98 13l-.5-8.5a.5.5 0 0 0-.48-.476z"/>
+                                            </svg>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

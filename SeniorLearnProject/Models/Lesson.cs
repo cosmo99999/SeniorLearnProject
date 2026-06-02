@@ -13,7 +13,6 @@ public class Lesson
     public DateTime End { get; set; }
     public string Title { get; set; }
     public DeliveryPlan DeliveryPlan { get; set; }
-
     public Lesson(){}
     public Lesson(string title, DateTime start, DateTime end)
     {

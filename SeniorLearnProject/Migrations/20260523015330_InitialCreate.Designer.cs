@@ -12,8 +12,8 @@ using SeniorLearnProject.Data;
 namespace SeniorLearnProject.Migrations
 {
     [DbContext(typeof(SeniorLearnContext))]
-    [Migration("20260518045910_init")]
-    partial class init
+    [Migration("20260523015330_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

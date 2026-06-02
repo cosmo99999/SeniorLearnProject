@@ -38,6 +38,7 @@ namespace SeniorLearnProject
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<Data.SeniorLearnContext>();
 
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory<User, Role>>();
             builder.Services.AddScoped<SchedulerService>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddControllersWithViews();

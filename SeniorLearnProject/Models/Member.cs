@@ -30,7 +30,22 @@ public class Member
 
     public void AddDeliveryPlan(List<Lesson> lessons, bool isCourse)
     {
-        DeliveryPlans.Add(new DeliveryPlan(lessons, isCourse));
+        var dp = new DeliveryPlan(lessons, isCourse)
+        {
+            //Member = this,
+            MemberId = this.Id
+        };
+
+        // set back-reference on lessons
+        if (dp.Lessons is not null)
+        {
+            foreach (var l in dp.Lessons)
+            {
+                l.DeliveryPlan = dp;
+            }
+        }
+
+        DeliveryPlans.Add(dp);
     }
     public void AddEnrolments(List<Lesson> lessons)
     {
