@@ -23,7 +23,7 @@ namespace SeniorLearnProject.Controllers
             var u = User.Identity.Name;
             if(u == null)
             {
-                return RedirectToAction("Login", "Account", new { area = "Identity" });
+                return View();
             }
             else
             {
@@ -31,7 +31,8 @@ namespace SeniorLearnProject.Controllers
                 var s = await _uServive.DoesUserHaveActiveRole(User, "Standard");
                 var p = await _uServive.DoesUserHaveActiveRole(User, "Professional");
                 var h = await _uServive.DoesUserHaveActiveRole(User, "Honorary");
-                if(a.IsActive)
+                
+                if(a != null && a == true)
                 {
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
