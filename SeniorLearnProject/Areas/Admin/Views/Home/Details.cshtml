@@ -1,0 +1,53 @@
+﻿@using System.ComponentModel
+@using SeniorLearnProject.Areas.Admin.Models;
+@using SeniorLearnProject.Models.Identity
+@{
+	ViewData["Title"] = "Home Page";
+	string title;
+	string buttonTitle;
+	@if (Model.MemberId.HasValue)
+	{
+		title = $"Details For {Model.Email}";
+		buttonTitle = "Update";
+	}
+	else
+	{
+		title = $"Create Member For {Model.Email}";
+		buttonTitle = "Create";
+	}
+}
+@model UserModel
+
+
+<h4>@title</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Home" asp-action="Details">
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">First Name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Last Name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+			@for(int i = 0; i < Model.RoleBools.Length;i++){
+			<div class="form-group">
+                <label>@Model.RoleStrings[i]
+                <input type="checkbox" asp-for="@Model.RoleBools[i]"/>
+				</label>
+				<input type="hidden" asp-for="@Model.RoleStrings[i]" />
+            </div>
+			}
+            <div class="form-group mt-3">
+                <input type="submit" value=@buttonTitle class="btn btn-primary w-100" />
+            </div>
+			<input type="hidden" asp-for="@Model.Email" />
+			<input type="hidden" asp-for="@Model.Id" />
+        </form>
+    </div>
+</div>

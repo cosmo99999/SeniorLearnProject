@@ -10,14 +10,32 @@ namespace SeniorLearnProject.Controllers
     {
         private readonly SeniorLearnContext _context;
         private readonly SchedulerService _schedulerService;
-        public HomeController(SeniorLearnContext context, SchedulerService schedulerService)
+        private readonly UserService _uServive;
+        public HomeController(SeniorLearnContext context, SchedulerService schedulerService, UserService uService)
         {
             _context = context;
             _schedulerService = schedulerService;
+            _uServive = uService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var u = User.Identity.Name;
+            if(u == null)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+            else
+            {
+                var a = await _uServive.DoesUserHaveActiveRole(User, "Admin");
+                var s = await _uServive.DoesUserHaveActiveRole(User, "Standard");
+                var p = await _uServive.DoesUserHaveActiveRole(User, "Professional");
+                var h = await _uServive.DoesUserHaveActiveRole(User, "Honorary");
+                if(a.IsActive)
+                {
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                }
+            }
             return View();
         }
 
