@@ -31,10 +31,10 @@ namespace SeniorLearnProject.Controllers
                 var s = await _uServive.DoesUserHaveActiveRole(User, "Standard");
                 var p = await _uServive.DoesUserHaveActiveRole(User, "Professional");
                 var h = await _uServive.DoesUserHaveActiveRole(User, "Honorary");
-                if(a.IsActive)
-                {
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                }
+                //if(a.IsActive)
+                //{
+                //    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                //}
             }
             return View();
         }
