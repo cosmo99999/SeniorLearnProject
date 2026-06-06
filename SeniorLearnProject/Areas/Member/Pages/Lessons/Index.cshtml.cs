@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Data;
 using SeniorLearnProject.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SeniorLearnProject.Areas.Member.Pages.Lessons;
 

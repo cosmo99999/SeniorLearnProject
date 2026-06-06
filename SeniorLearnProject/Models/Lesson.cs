@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeniorLearnProject.Models;
+﻿namespace SeniorLearnProject.Models;
 
 public class Lesson
 {
@@ -29,5 +23,4 @@ public class Lesson
         }
         return false;
     }
-
 }

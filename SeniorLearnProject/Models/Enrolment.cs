@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeniorLearnProject.Models;
+﻿namespace SeniorLearnProject.Models;
 
 
 public class Enrolment
@@ -13,10 +7,16 @@ public class Enrolment
     public Member Member { get; set; }
     public Lesson Lesson { get; set; }
 
-    private Enrolment(){}
+    public Enrolment(){}
     public Enrolment(Member member, Lesson lesson)
     {
         Member = member;
         Lesson = lesson;
     }
+
+    public bool HasOverlap(Lesson l)
+    {
+        return Lesson.HasOverlap(l);
+    }
+
 }
