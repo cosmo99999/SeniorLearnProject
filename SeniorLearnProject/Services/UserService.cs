@@ -86,6 +86,10 @@ public class UserService
             for (int i = 0; i < userRoles.Count(); i++)
             {
                 if (!userRoles[i].IsActive) continue;
+                if (m.RoleStrings[i] == "Admin")
+                {
+                    m.isAdmin = true;
+                }
                 m.RoleBools[userRoles[i].RoleType] = true;
             }
             if (u.MemberId.HasValue)
@@ -123,6 +127,10 @@ public class UserService
         {
             if (!userRoles[i].IsActive) continue;
             m.RoleBools[userRoles[i].RoleType] = true;
+            if (m.RoleStrings[i] == "Admin")
+            {
+                m.isAdmin = true;
+            }
         }
 
         if (user.MemberId.HasValue)

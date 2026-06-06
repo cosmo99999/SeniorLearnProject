@@ -28,6 +28,12 @@
     <Folder Include="Areas\Member\Models\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Views\Home\WaitForApproval.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

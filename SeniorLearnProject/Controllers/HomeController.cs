@@ -32,11 +32,20 @@ namespace SeniorLearnProject.Controllers
                 var p = await _uServive.DoesUserHaveActiveRole(User, "Professional");
                 var h = await _uServive.DoesUserHaveActiveRole(User, "Honorary");
                 
-                if(a != null && a == true)
+                if(!a && !s && !p && !h)
+                {
+                    return RedirectToAction("WaitForApproval");
+                }
+                if (a)
                 {
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
             }
+            return View();
+        }
+
+        public async Task<IActionResult> WaitForApproval()
+        {
             return View();
         }
 
