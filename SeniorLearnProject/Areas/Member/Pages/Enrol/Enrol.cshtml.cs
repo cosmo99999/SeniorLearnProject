@@ -20,27 +20,15 @@ public class EnrolModel : PageModel
         _userManager = userManager;
     }
 
-    [BindProperty]
+    [BindProperty]  // as model requier
     public int LessonId { get; set; }
-
     [BindProperty]
     public int MemberId { get; set; }
-
-    [BindProperty]
     public string Title { get; set; } = "";
-
-    [BindProperty]
     public string StartTime { get; set; } = "";
-
-    [BindProperty]
     public string StartDate { get; set; } = "";
-
-    [BindProperty]
     public bool IsCourse { get; set; }
-
-    [BindProperty]
     public string FinishDate { get; set; } = "";
-    [BindProperty]
     public string WeekDays { get; set; } = "";
 
 
@@ -54,7 +42,7 @@ public class EnrolModel : PageModel
 
         string findFinishDate(Lesson l)
         {
-            if (!l.DeliveryPlan.IsCourse) return "";
+            if (!l.DeliveryPlan.IsCourse) return lesson.End.ToString("dd MMMM");
             var courseLessons = _context.Lessons.Where(x => x.DeliveryPlan != null && x.DeliveryPlan.Id == l.DeliveryPlan.Id);
             var lastLesson = courseLessons.OrderByDescending(x => x.End).FirstOrDefault();
             return lastLesson != null ? lastLesson.End.ToString("dd MMMM") : "";
@@ -73,7 +61,7 @@ public class EnrolModel : PageModel
         StartTime = lesson.Start.ToString("HH : mm");
         StartDate = lesson.Start.ToString("dd MMMM");
         IsCourse = lesson.DeliveryPlan.IsCourse;
-        FinishDate = findFinishDate(lesson); //Find the last date of the course, if it's a course
+        FinishDate = findFinishDate(lesson); //Find the last date of the course, if it's a course. The date of the lesson.end if it is a single lesson
         WeekDays = findWeekDays(lesson); // Assuming WeekDay is a string like "Monday,Wednesday,Friday". You may need to adjust this based on your actual data model.
 
         // Pre-fill MemberId from the current user when available so the form can post it.
@@ -119,26 +107,6 @@ public class EnrolModel : PageModel
             .FirstOrDefaultAsync(x => x.Id == LessonId);
         if (lesson == null) return NotFound();
 
-        // Check overlaps
-        var lessons = new List<Lesson> { lesson };
-
-        foreach (var l in lessons)
-        {
-            var overlapping = _context.Lessons
-                .Where(x => x.DeliveryPlan != null
-                            && x.DeliveryPlan.MemberId != null
-                            && x.DeliveryPlan.MemberId == mid
-                            && x.Start < l.End
-                            && x.End > l.Start)
-                .Any();
-
-            if (overlapping)
-            {
-                ModelState.AddModelError(string.Empty, "One or more lessons overlap with existing scheduled lessons.");
-                return Page();
-            }
-        }
-
         // Get the Member entity to attach to Enrolment
         var member = await _context.Members.FindAsync(mid);
         if (member == null)
@@ -146,8 +114,6 @@ public class EnrolModel : PageModel
             ModelState.AddModelError(string.Empty, "Member record not found.");
             return Page();
         }
-
-        // If the lesson is part of a course, you would need to load all lessons in that course and check for overlaps similarly.
 
         // Populate Enrolment table with chosen lessons
         var result = await ValidateAndEnrollLessonsAsync(new List<int> { LessonId }, member);
