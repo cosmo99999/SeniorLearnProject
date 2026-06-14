@@ -21,9 +21,9 @@ public class IndexModel : PageModel
 
     public IList<Lesson> Lessons { get; set; } = new List<Lesson>();
     public IList<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
-    public int getEnrolmentId(Lesson lesson)
+    public int getEnrolmentId(int lessonId)
     {
-        var enrolment = _context.Enrolments.FirstOrDefault(e => e.Lesson.Id == lesson.Id && e.Member.Id == Enrolments.FirstOrDefault().Member.Id);
+        var enrolment = _context.Enrolments.FirstOrDefault(e => e.Lesson.Id == lessonId && e.Member.Id == Enrolments.FirstOrDefault().Member.Id);
         return enrolment?.Id ?? 0;
     }
 
