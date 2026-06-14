@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SeniorLearnProject.Data;
 using SeniorLearnProject.Models;
-using System.Threading.Tasks;
 
 namespace SeniorLearnProject.Areas.Member.Pages.Lessons;
 
@@ -41,7 +40,6 @@ public class DeleteModel : PageModel
             _context.Lessons.Remove(dbLesson);
             await _context.SaveChangesAsync();
         }
-
         return RedirectToPage("./Index");
     }
 }

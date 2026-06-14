@@ -1,4 +1,73 @@
-﻿@page
+﻿@page "{id:int}"
 @model SeniorLearnProject.Areas.Member.Pages.Enrol.CancelModel
 @{
+    ViewData["Title"] = "Cancel Enrolment";
+}
+<h1>Cancel Enrolment</h1>
+@* form for a course *@
+@{
+    if (Model.Enrolment.Lesson.DeliveryPlan.IsCourse == true)
+    {
+        <div class="alert alert-info">
+            This lesson is part of a course. Cenceling will cencel all lessons within the course.
+        </div>
+
+        <form method="post">
+            <input type="hidden" asp-for="Enrolment.Id" />
+            <div class="bg-light p-4 rounded-4 mb-4">
+                <div class="mb-3">
+                    <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">Lesson Title</span>
+                    <span class="fs-5 fw-bold text-dark">@Model.Enrolment.Lesson.Title</span>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">Start Time</span>
+                        <span class="text-dark fw-medium">@Model.StartDate</span>
+                    </div>
+                    <div class="col-6">
+                        <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">End Time</span>
+                        <span class="text-dark fw-medium">@Model.FinishDate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex gap-2 justify-content-end">
+                <a asp-page="./Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Cencel course</button>
+            </div>
+        </form>
+    }
+}
+
+@* form for a single lesson *@
+@{
+    if (Model.Enrolment.Lesson.DeliveryPlan.IsCourse == false)
+    {
+        <div class="alert alert-info">
+            You are canceling the lesson.
+        </div>
+
+        <form method="post">
+            <input type="hidden" asp-for="Enrolment.Id" />
+            <div class="bg-light p-4 rounded-4 mb-4">
+                <div class="mb-3">
+                    <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">Lesson Title</span>
+                    <span class="fs-5 fw-bold text-dark">@Model.Enrolment.Lesson.Title</span>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">Start Time</span>
+                        <span class="text-dark fw-medium">@Model.Enrolment.Lesson.Start.ToString("MMM dd, yyyy HH:mm")</span>
+                    </div>
+                    <div class="col-6">
+                        <span class="text-secondary small fw-semibold text-uppercase d-block mb-1">End Time</span>
+                        <span class="text-dark fw-medium">@Model.Enrolment.Lesson.End.ToString("MMM dd, yyyy HH:mm")</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex gap-2 justify-content-end">
+                <a asp-page="./Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Cencel lesson</button>
+            </div>
+        </form>
+    }
 }

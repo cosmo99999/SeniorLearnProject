@@ -40,6 +40,7 @@ public class EnrolModel : PageModel
 
         if (lesson == null) return NotFound(); // Handle lesson not found
 
+        //Find the last date of the course, if it's a course. The date of the lesson.end if it is a single lesson
         string findFinishDate(Lesson l)
         {
             if (!l.DeliveryPlan.IsCourse) return lesson.End.ToString("dd MMMM");
@@ -48,11 +49,15 @@ public class EnrolModel : PageModel
             return lastLesson != null ? lastLesson.End.ToString("dd MMMM") : "";
         }
 
+        // Assuming WeekDay is a string like "Monday,Wednesday,Friday". You may need to adjust this based on your actual data model. Filter repeated weekdays.
         string findWeekDays(Lesson l)
         {
             if (!l.DeliveryPlan.IsCourse) return l.Start.ToString("dddd");
             var courseLessons = _context.Lessons.Where(x => x.DeliveryPlan != null && x.DeliveryPlan.Id == l.DeliveryPlan.Id);
             var weekDays = courseLessons.Select(x => x.Start.ToString("dddd")).Distinct();
+
+            //Filter repeated weekdays.
+
             return string.Join(", ", weekDays);
         }
 
@@ -61,8 +66,8 @@ public class EnrolModel : PageModel
         StartTime = lesson.Start.ToString("HH : mm");
         StartDate = lesson.Start.ToString("dd MMMM");
         IsCourse = lesson.DeliveryPlan.IsCourse;
-        FinishDate = findFinishDate(lesson); //Find the last date of the course, if it's a course. The date of the lesson.end if it is a single lesson
-        WeekDays = findWeekDays(lesson); // Assuming WeekDay is a string like "Monday,Wednesday,Friday". You may need to adjust this based on your actual data model.
+        FinishDate = findFinishDate(lesson); 
+        WeekDays = findWeekDays(lesson); 
 
         // Pre-fill MemberId from the current user when available so the form can post it.
         var user = await _userManager.GetUserAsync(User);
